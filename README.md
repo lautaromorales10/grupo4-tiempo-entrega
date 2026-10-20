@@ -78,7 +78,7 @@ Como referencia, la estimación actual de la plataforma tiene un MAE de **12,5 d
 
 ## Ejecución local
 
-Requisitos: Python 3.13 (las versiones exactas de las librerías están en `requirements.txt`).
+Requisitos: **Python 3.12 o superior** (recomendado 3.13; numpy 2.5 y scipy 1.18 no se instalan en versiones anteriores). Las versiones exactas de las librerías están en `requirements.txt`.
 
 ```bash
 # 1. Crear y activar un entorno virtual
@@ -115,7 +115,7 @@ Para volver a ejecutar el análisis, abrir `notebooks/Proyecto_Grupo4_Tiempo_Ent
    - **Build Command:** `pip install -r requirements.txt`
    - **Start Command:** `gunicorn app:app`
    - **Plan:** Free
-4. Si la instalación falla por la versión de Python, agregar la variable de entorno `PYTHON_VERSION` con una versión 3.13 (por ejemplo `3.13.5`).
+4. **Versión de Python:** el archivo `.python-version` (contenido: `3.13`) hace que Render use la última versión 3.13. Sin él, Render usaría su versión por defecto (3.14 para servicios nuevos). Si algo falla, también se puede fijar con la variable de entorno `PYTHON_VERSION` y una versión completa, por ejemplo `3.13.5`; esa variable tiene prioridad sobre el archivo.
 5. Probar la URL pública desde otro dispositivo.
 
 **URL pública:** *(completar después del despliegue)*  
