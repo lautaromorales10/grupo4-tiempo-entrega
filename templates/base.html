@@ -1,0 +1,35 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>{% block titulo %}Estimador de tiempo de entrega{% endblock %} · Grupo 4</title>
+  <link rel="icon" href="{{ url_for('static', filename='img/icono.svg') }}" type="image/svg+xml">
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+  <header class="barra">
+    <div class="contenedor barra__fila">
+      <a class="marca" href="{{ url_for('inicio') }}">
+        <img src="{{ url_for('static', filename='img/icono.svg') }}" alt="" width="28" height="28">
+        <span>Estimador de tiempo de entrega</span>
+      </a>
+      <nav class="nav">
+        <a href="{{ url_for('inicio') }}" class="{{ 'activo' if request.endpoint in ('inicio', 'prediccion') }}">Predicción</a>
+        <a href="{{ url_for('acerca_del_modelo') }}" class="{{ 'activo' if request.endpoint == 'acerca_del_modelo' }}">Sobre el modelo</a>
+      </nav>
+    </div>
+  </header>
+
+  <main class="contenedor">
+    {% block contenido %}{% endblock %}
+  </main>
+
+  <footer class="pie">
+    <div class="contenedor">
+      Proyecto Semestral · Análisis de Negocios (IND-163C) · UTFSM 2026-02 · Grupo 4
+    </div>
+  </footer>
+  {% block scripts %}{% endblock %}
+</body>
+</html>

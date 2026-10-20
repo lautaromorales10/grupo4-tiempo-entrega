@@ -1,0 +1,122 @@
+{% extends "base.html" %}
+{% block titulo %}Nueva predicción{% endblock %}
+
+{% macro campo_error(nombre) -%}
+  {% if errores.get(nombre) %}<p class="error" id="err-{{ nombre }}">{{ errores[nombre] }}</p>{% endif %}
+{%- endmacro %}
+
+{% macro select(nombre, opciones, etiqueta_campo) -%}
+  <label for="{{ nombre }}">{{ etiqueta_campo }}</label>
+  <select id="{{ nombre }}" name="{{ nombre }}" required class="{{ 'invalido' if errores.get(nombre) }}">
+    <option value="">Seleccione…</option>
+    {% for codigo, texto in opciones %}
+      <option value="{{ codigo }}" {{ 'selected' if valores.get(nombre) == codigo }}>{{ texto }}</option>
+    {% endfor %}
+  </select>
+  {{ campo_error(nombre) }}
+{%- endmacro %}
+
+{% macro numero(nombre, etiqueta_campo, paso="any", minimo=None, maximo=None, ayuda=None) -%}
+  <label for="{{ nombre }}">{{ etiqueta_campo }}</label>
+  <input type="number" id="{{ nombre }}" name="{{ nombre }}" step="{{ paso }}" required
+         {% if minimo is not none %}min="{{ minimo }}"{% endif %} {% if maximo is not none %}max="{{ maximo }}"{% endif %}
+         value="{{ valores.get(nombre, '') }}" class="{{ 'invalido' if errores.get(nombre) }}">
+  {% if ayuda %}<p class="ayuda">{{ ayuda }}</p>{% endif %}
+  {{ campo_error(nombre) }}
+{%- endmacro %}
+
+{% block contenido %}
+<section class="intro">
+  <h1>¿Cuántos días tardará en llegar el pedido?</h1>
+  <p>Ingrese los datos de la orden <strong>tal como se conocen al momento de la compra</strong>. El modelo estima los días entre la compra y la entrega al cliente, junto con un rango probable.</p>
+  <div class="ejemplos">
+    <span>Cargar ejemplo:</span>
+    <button type="button" class="chip" data-ejemplo="rapido">Mismo estado (SP → SP)</button>
+    <button type="button" class="chip" data-ejemplo="lejano">Larga distancia (SP → BA)</button>
+    <button type="button" class="chip" data-ejemplo="pesado">Mueble pesado (PR → RS)</button>
+  </div>
+</section>
+
+{% if errores %}
+<div class="alerta alerta--error" role="alert">
+  Hay {{ errores|length }} campo(s) con problemas. Revise los mensajes en rojo.
+</div>
+{% endif %}
+
+<form method="post" action="{{ url_for('prediccion') }}" class="formulario" id="formulario" novalidate>
+  <fieldset class="tarjeta">
+    <legend>1 · Compra</legend>
+    <div class="grilla grilla--2">
+      <div>
+        <label for="fecha_compra">Fecha y hora de la compra</label>
+        <input type="datetime-local" id="fecha_compra" name="fecha_compra" required value="{{ valores.get('fecha_compra', '') }}"
+               class="{{ 'invalido' if errores.get('fecha_compra') }}">
+        {{ campo_error('fecha_compra') }}
+      </div>
+      <div>
+        {{ numero('plazo_plataforma', 'Plazo estimado que informa la plataforma (días)', paso='any', minimo=1, maximo=120,
+                  ayuda='Es el plazo que la tienda le muestra al cliente al comprar.') }}
+      </div>
+    </div>
+  </fieldset>
+
+  <div class="grilla grilla--2">
+    <fieldset class="tarjeta">
+      <legend>2 · Cliente</legend>
+      {{ select('estado_cliente', estados, 'Estado') }}
+      <label for="ciudad_cliente">Ciudad <span class="opcional">(opcional)</span></label>
+      <input type="text" id="ciudad_cliente" name="ciudad_cliente" list="lista_ciudad_cliente" autocomplete="off"
+             value="{{ valores.get('ciudad_cliente', '') }}" placeholder="Escriba para buscar…">
+      <datalist id="lista_ciudad_cliente"></datalist>
+      <p class="ayuda">Si la ciudad no aparece, se usa el centro aproximado del estado.</p>
+    </fieldset>
+
+    <fieldset class="tarjeta">
+      <legend>3 · Vendedor</legend>
+      {{ select('estado_vendedor', estados_vendedor, 'Estado') }}
+      <label for="ciudad_vendedor">Ciudad <span class="opcional">(opcional)</span></label>
+      <input type="text" id="ciudad_vendedor" name="ciudad_vendedor" list="lista_ciudad_vendedor" autocomplete="off"
+             value="{{ valores.get('ciudad_vendedor', '') }}" placeholder="Escriba para buscar…">
+      <datalist id="lista_ciudad_vendedor"></datalist>
+      <p class="ayuda">Si hay varios vendedores, indique el del primer producto.</p>
+    </fieldset>
+  </div>
+
+  <fieldset class="tarjeta">
+    <legend>4 · Productos</legend>
+    <div class="grilla grilla--3">
+      <div class="col-completa">{{ select('categoria', categorias, 'Categoría del producto principal') }}</div>
+      <div>{{ numero('n_items', 'Cantidad de ítems', paso=1, minimo=1, maximo=30) }}</div>
+      <div>{{ numero('n_vendedores', 'Cantidad de vendedores', paso=1, minimo=1, maximo=10) }}</div>
+      <div>{{ numero('precio_total', 'Precio total de los productos (R$)', paso='any', minimo=0.5) }}</div>
+      <div>{{ numero('flete_total', 'Costo total del flete (R$)', paso='any', minimo=0) }}</div>
+      <div>{{ numero('peso_g', 'Peso promedio por producto (g)', paso='any', minimo=1) }}</div>
+      <div class="dimensiones">
+        <span class="label-grupo">Dimensiones promedio (cm)</span>
+        <div class="grilla grilla--3 compacta">
+          <div>{{ numero('largo_cm', 'Largo', paso='any', minimo=1, maximo=250) }}</div>
+          <div>{{ numero('alto_cm', 'Alto', paso='any', minimo=1, maximo=250) }}</div>
+          <div>{{ numero('ancho_cm', 'Ancho', paso='any', minimo=1, maximo=250) }}</div>
+        </div>
+      </div>
+    </div>
+  </fieldset>
+
+  <fieldset class="tarjeta">
+    <legend>5 · Pago</legend>
+    <div class="grilla grilla--2">
+      <div>{{ select('medio_pago', medios_pago, 'Medio de pago principal') }}</div>
+      <div>{{ numero('cuotas', 'Número de cuotas', paso=1, minimo=1, maximo=24) }}</div>
+    </div>
+  </fieldset>
+
+  <div class="acciones">
+    <button type="submit" class="boton" id="boton-predecir">Estimar tiempo de entrega</button>
+  </div>
+</form>
+{% endblock %}
+
+{% block scripts %}
+<script>window.API_CIUDADES = "{{ url_for('api_ciudades') }}";</script>
+<script src="{{ url_for('static', filename='js/app.js') }}"></script>
+{% endblock %}

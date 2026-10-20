@@ -1,0 +1,244 @@
+{
+  "modelo": "Gradient Boosting",
+  "hiperparametros": {
+    "n_estimators": 220,
+    "learning_rate": 0.05,
+    "max_depth": 4,
+    "min_samples_leaf": 20,
+    "subsample": 0.8
+  },
+  "version_sklearn": "1.9.1",
+  "entrenado_con": "Train (5432 órdenes), target recortado al percentil 99 (43.4 días)",
+  "metricas_test": {
+    "MAE": 4.507,
+    "RMSE": 6.7497,
+    "R2": 0.3608,
+    "Sesgo": -0.1941,
+    "% atraso > 5 días": 16.4827
+  },
+  "metricas_cv": {
+    "MAE": 4.6215,
+    "RMSE": 7.3383,
+    "R2": 0.3187,
+    "Sesgo": -0.1473
+  },
+  "mae_plataforma_test": 12.5138,
+  "rango_probable": {
+    "q_inf": 0.4907,
+    "q_sup": 1.6572,
+    "cobertura_test": 0.8072
+  },
+  "entradas": [
+    "order_purchase_timestamp",
+    "customer_geo_lat",
+    "customer_geo_lng",
+    "first_seller_geo_lat",
+    "first_seller_geo_lng",
+    "estimated_delivery_days",
+    "order_item_count",
+    "unique_seller_count",
+    "total_item_price",
+    "total_freight_value",
+    "avg_product_weight_g",
+    "avg_product_volume_cm3",
+    "payment_max_installments",
+    "customer_state",
+    "first_seller_state",
+    "payment_type_primary",
+    "first_product_category_en"
+  ],
+  "categorias": {
+    "customer_state": [
+      "AC",
+      "AL",
+      "AM",
+      "AP",
+      "BA",
+      "CE",
+      "DF",
+      "ES",
+      "GO",
+      "MA",
+      "MG",
+      "MS",
+      "MT",
+      "PA",
+      "PB",
+      "PE",
+      "PI",
+      "PR",
+      "RJ",
+      "RN",
+      "RO",
+      "RR",
+      "RS",
+      "SC",
+      "SE",
+      "SP",
+      "TO"
+    ],
+    "first_seller_state": [
+      "BA",
+      "CE",
+      "DF",
+      "ES",
+      "GO",
+      "MA",
+      "MG",
+      "MS",
+      "MT",
+      "PB",
+      "PE",
+      "PR",
+      "RJ",
+      "RN",
+      "RO",
+      "RS",
+      "SC",
+      "SP"
+    ],
+    "payment_type_primary": [
+      "boleto",
+      "credit_card",
+      "debit_card",
+      "voucher"
+    ],
+    "first_product_category_en": [
+      "agro_industry_and_commerce",
+      "air_conditioning",
+      "art",
+      "arts_and_craftmanship",
+      "audio",
+      "auto",
+      "baby",
+      "bed_bath_table",
+      "books_general_interest",
+      "books_imported",
+      "books_technical",
+      "cds_dvds_musicals",
+      "christmas_supplies",
+      "cine_photo",
+      "computers",
+      "computers_accessories",
+      "consoles_games",
+      "construction_tools_construction",
+      "construction_tools_lights",
+      "construction_tools_safety",
+      "cool_stuff",
+      "costruction_tools_garden",
+      "costruction_tools_tools",
+      "diapers_and_hygiene",
+      "drinks",
+      "dvds_blu_ray",
+      "electronics",
+      "fashio_female_clothing",
+      "fashion_bags_accessories",
+      "fashion_childrens_clothes",
+      "fashion_male_clothing",
+      "fashion_shoes",
+      "fashion_underwear_beach",
+      "fixed_telephony",
+      "food",
+      "food_drink",
+      "furniture_bedroom",
+      "furniture_decor",
+      "furniture_living_room",
+      "furniture_mattress_and_upholstery",
+      "garden_tools",
+      "health_beauty",
+      "home_appliances",
+      "home_appliances_2",
+      "home_confort",
+      "home_construction",
+      "housewares",
+      "industry_commerce_and_business",
+      "kitchen_dining_laundry_garden_furniture",
+      "luggage_accessories",
+      "market_place",
+      "music",
+      "musical_instruments",
+      "office_furniture",
+      "perfumery",
+      "pet_shop",
+      "signaling_and_security",
+      "small_appliances",
+      "small_appliances_home_oven_and_coffee",
+      "sports_leisure",
+      "stationery",
+      "tablets_printing_image",
+      "telephony",
+      "toys",
+      "watches_gifts"
+    ]
+  },
+  "rangos_train": {
+    "customer_geo_lat": [
+      -32.184118,
+      2.823096
+    ],
+    "customer_geo_lng": [
+      -67.848538,
+      -34.824357
+    ],
+    "first_seller_geo_lat": [
+      -32.079231,
+      -2.501242
+    ],
+    "first_seller_geo_lng": [
+      -61.958415,
+      -34.855616
+    ],
+    "estimated_delivery_days": [
+      2.21647,
+      90.566632
+    ],
+    "order_item_count": [
+      1.0,
+      8.0
+    ],
+    "unique_seller_count": [
+      1.0,
+      3.0
+    ],
+    "total_item_price": [
+      4.99,
+      4799.0
+    ],
+    "total_freight_value": [
+      0.0,
+      456.47
+    ],
+    "avg_product_weight_g": [
+      50.0,
+      40425.0
+    ],
+    "avg_product_volume_cm3": [
+      352.0,
+      282750.0
+    ],
+    "payment_max_installments": [
+      1.0,
+      20.0
+    ]
+  },
+  "ejemplo": {
+    "order_purchase_timestamp": "2018-01-06T20:57",
+    "customer_geo_lat": -25.342398,
+    "customer_geo_lng": -49.086043,
+    "first_seller_geo_lat": -23.472815,
+    "first_seller_geo_lng": -46.600729,
+    "estimated_delivery_days": 30.126528,
+    "order_item_count": 1.0,
+    "unique_seller_count": 1.0,
+    "total_item_price": 49.9,
+    "total_freight_value": 14.1,
+    "avg_product_weight_g": 200.0,
+    "avg_product_volume_cm3": 1232.0,
+    "payment_max_installments": 1.0,
+    "customer_state": "PR",
+    "first_seller_state": "SP",
+    "payment_type_primary": "boleto",
+    "first_product_category_en": "toys"
+  },
+  "ejemplo_real_dias": 9.06
+}

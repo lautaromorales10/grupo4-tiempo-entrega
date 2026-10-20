@@ -1,0 +1,64 @@
+{% extends "base.html" %}
+{% block titulo %}Resultado{% endblock %}
+
+{% block contenido %}
+<section class="resultado">
+  <div class="tarjeta resultado__principal">
+    <p class="resultado__etiqueta">Tiempo de entrega estimado</p>
+    <p class="resultado__valor"><span id="dias-estimados">{{ r.dias|num(1) }}</span> <span class="unidad">días</span></p>
+    <p class="resultado__fecha">Llegada estimada: <strong>{{ r.fecha_estimada|fecha }}</strong></p>
+
+    <div class="rango" aria-label="Rango probable">
+      <div class="rango__barra">
+        {% set escala = [r.dias_max, r.dias_plataforma]|max * 1.1 %}
+        <div class="rango__tramo" style="left: {{ (r.dias_min / escala * 100)|round(2) }}%; width: {{ ((r.dias_max - r.dias_min) / escala * 100)|round(2) }}%"></div>
+        <div class="rango__punto" style="left: {{ (r.dias / escala * 100)|round(2) }}%" title="Estimación del modelo"></div>
+        <div class="rango__plataforma" style="left: {{ (r.dias_plataforma / escala * 100)|round(2) }}%" title="Plazo de la plataforma"></div>
+      </div>
+      <div class="rango__leyenda">
+        <span><i class="marca-rango"></i> Rango probable (80%): {{ r.dias_min|num(1) }} a {{ r.dias_max|num(1) }} días</span>
+        <span><i class="marca-punto"></i> Estimación del modelo</span>
+        <span><i class="marca-plataforma"></i> Plazo informado por la plataforma: {{ r.dias_plataforma|num(1) }} días</span>
+      </div>
+    </div>
+
+    <p class="resultado__texto">
+      Según la validación del modelo, 8 de cada 10 pedidos con estas características llegan entre el
+      <strong>{{ r.fecha_min|fecha }}</strong> y el <strong>{{ r.fecha_max|fecha }}</strong>.
+      {% if r.dias_plataforma > r.dias_max %}
+        El plazo de la plataforma es más conservador que el rango del modelo.
+      {% elif r.dias_plataforma < r.dias %}
+        <strong>Atención:</strong> el plazo de la plataforma es menor que la estimación del modelo; hay riesgo de que el pedido llegue tarde.
+      {% endif %}
+    </p>
+  </div>
+
+  {% if avisos %}
+  <div class="alerta alerta--aviso" role="status">
+    <strong>Considere lo siguiente:</strong>
+    <ul>{% for a in avisos %}<li>{{ a }}</li>{% endfor %}</ul>
+  </div>
+  {% endif %}
+
+  <div class="grilla grilla--2">
+    <div class="tarjeta">
+      <h2>Datos ingresados</h2>
+      <dl class="resumen">
+        {% for k, v in resumen.items() %}<dt>{{ k }}</dt><dd>{{ v }}</dd>{% endfor %}
+      </dl>
+    </div>
+    <div class="tarjeta">
+      <h2>¿Qué tan confiable es?</h2>
+      <p>El modelo ({{ meta.modelo }}) se equivoca en promedio <strong>{{ meta.metricas_test.MAE|num(1) }} días</strong>
+        (MAE en datos de prueba), frente a <strong>{{ meta.mae_plataforma_test|num(1) }} días</strong> de la estimación actual de la plataforma.</p>
+      <p>Usa solo información disponible al momento de la compra. Retrasos causados por el transportista, el clima o la pérdida del paquete no se pueden anticipar con estos datos, por eso se muestra un rango y no solo un número.</p>
+      <p><a href="{{ url_for('acerca_del_modelo') }}">Ver detalles del modelo →</a></p>
+    </div>
+  </div>
+
+  <div class="acciones">
+    <a class="boton boton--secundario" href="javascript:history.back()">← Modificar datos</a>
+    <a class="boton" href="{{ url_for('inicio') }}">Nueva predicción</a>
+  </div>
+</section>
+{% endblock %}

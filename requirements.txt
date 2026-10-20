@@ -1,0 +1,13 @@
+# --- Aplicación web (lo que instala Render) ---
+Flask==3.1.3
+gunicorn==23.0.0
+scikit-learn==1.9.1   # debe ser la MISMA versión con la que se entrenó y guardó el modelo
+scipy==1.18.1
+numpy==2.5.3
+pandas==3.0.5
+joblib==1.6.0
+
+# --- Notebook (análisis y entrenamiento) ---
+openpyxl==3.1.5
+matplotlib==3.11.2
+seaborn==0.13.2

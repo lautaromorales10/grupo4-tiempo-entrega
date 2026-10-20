@@ -1,0 +1,41 @@
+{% extends "base.html" %}
+{% block titulo %}Sobre el modelo{% endblock %}
+
+{% block contenido %}
+<section class="intro">
+  <h1>Sobre el modelo</h1>
+  <p>Modelo de regresión que estima los días entre la compra y la entrega, entrenado con {{ meta.entrenado_con }}.</p>
+</section>
+
+<div class="grilla grilla--2">
+  <div class="tarjeta">
+    <h2>Modelo seleccionado: {{ meta.modelo }}</h2>
+    <table class="tabla">
+      <thead><tr><th>Hiperparámetro</th><th>Valor</th></tr></thead>
+      <tbody>{% for k, v in meta.hiperparametros.items() %}<tr><td><code>{{ k }}</code></td><td>{{ v }}</td></tr>{% endfor %}</tbody>
+    </table>
+    <p class="ayuda">scikit-learn {{ meta.version_sklearn }}. La app carga el mismo Pipeline exportado desde el notebook (variables derivadas, imputación, escalamiento, dummies y modelo).</p>
+  </div>
+
+  <div class="tarjeta">
+    <h2>Desempeño</h2>
+    <table class="tabla">
+      <thead><tr><th>Métrica</th><th>K-Fold (K=5, Train)</th><th>Test</th></tr></thead>
+      <tbody>
+        <tr><td>MAE (días)</td><td>{{ meta.metricas_cv.MAE|num(2) }}</td><td>{{ meta.metricas_test.MAE|num(2) }}</td></tr>
+        <tr><td>RMSE (días)</td><td>{{ meta.metricas_cv.RMSE|num(2) }}</td><td>{{ meta.metricas_test.RMSE|num(2) }}</td></tr>
+        <tr><td>R²</td><td>{{ meta.metricas_cv.R2|num(3) }}</td><td>{{ meta.metricas_test.R2|num(3) }}</td></tr>
+        <tr><td>Sesgo (días)</td><td>{{ meta.metricas_cv.Sesgo|num(2) }}</td><td>{{ meta.metricas_test.Sesgo|num(2) }}</td></tr>
+      </tbody>
+    </table>
+    <p>Referencia: la estimación actual de la plataforma tiene un MAE de <strong>{{ meta.mae_plataforma_test|num(1) }} días</strong> en el mismo conjunto de prueba.</p>
+    <p>Rango probable: predicción × {{ meta.rango_probable.q_inf|num(2) }} a predicción × {{ meta.rango_probable.q_sup|num(2) }} (cobertura en Test: {{ (meta.rango_probable.cobertura_test * 100)|num(0) }}%).</p>
+  </div>
+</div>
+
+<div class="tarjeta">
+  <h2>Variables que usa el modelo</h2>
+  <p>Solo información <strong>conocida al momento de la compra</strong>: fecha y hora de compra, ubicación del cliente y del vendedor (y su distancia), plazo informado por la plataforma, cantidad de ítems y vendedores, precio, flete, peso, volumen, categoría, medio de pago y cuotas.</p>
+  <p>Se excluyeron deliberadamente las variables que se generan después de la compra (aprobación del pago, despacho al transportista, atraso respecto de lo estimado, reseñas del cliente), porque usarlas produciría <em>data leakage</em>: el modelo parecería muy preciso en el análisis, pero no podría usarse en la práctica.</p>
+</div>
+{% endblock %}
