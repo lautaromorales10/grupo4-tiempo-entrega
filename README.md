@@ -2,12 +2,12 @@
 
 Proyecto Semestral de **Análisis de Negocios (IND-163C)**, UTFSM 2026-02 · **Grupo 4**
 
-| Integrante | ROL |
-|---|---|
-| Lautaro Morales | 202160640-8 |
-| Vicente Vergara | 202160591-6 |
-| Joaquín Valero | 202160609-2 |
-| Maximiliano Espinosa | 202160605-k |
+| Integrante | ROL | Rol principal en el proyecto |
+|---|---|---|
+| Lautaro Morales | 202160640-8 | Modelamiento predictivo y despliegue de la aplicación |
+| Vicente Vergara | 202160591-6 | Redacción del informe: dataset, EDA y preprocesamiento |
+| Joaquín Valero | 202160609-2 | Redacción del informe: modelos, evaluación y K-Fold |
+| Maximiliano Espinosa | 202160605-k | Presentación y preparación de la defensa |
 
 ## Objetivo y problema de negocio
 
