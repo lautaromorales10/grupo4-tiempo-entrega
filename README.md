@@ -118,7 +118,7 @@ Para volver a ejecutar el análisis, abrir `notebooks/Proyecto_Grupo4_Tiempo_Ent
 4. **Versión de Python:** el archivo `.python-version` (contenido: `3.13`) hace que Render use la última versión 3.13. Sin él, Render usaría su versión por defecto (3.14 para servicios nuevos). Si algo falla, también se puede fijar con la variable de entorno `PYTHON_VERSION` y una versión completa, por ejemplo `3.13.5`; esa variable tiene prioridad sobre el archivo.
 5. Probar la URL pública desde otro dispositivo.
 
-**URL pública:** *(completar después del despliegue)*  
-**Repositorio GitHub:** *(completar)*
+**URL pública:** (https://grupo4-tiempo-entrega.onrender.com/) 
+**Repositorio GitHub:** (https://github.com/lautaromorales10/grupo4-tiempo-entrega)
 
 > En el plan gratuito, Render "duerme" el servicio después de unos minutos sin visitas y tarda alrededor de un minuto en despertar. **Abrir la URL unos minutos antes de la presentación.**
