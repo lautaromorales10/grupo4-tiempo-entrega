@@ -42,6 +42,13 @@
   const ahora = new Date();
   const pad = (n) => String(n).padStart(2, "0");
   const fechaHoy = `${ahora.getFullYear()}-${pad(ahora.getMonth() + 1)}-${pad(ahora.getDate())}T10:30`;
+
+  // El servidor propone la fecha en su propia zona horaria (UTC en Render). Se reemplaza por la
+  // hora local del navegador, salvo que el formulario vuelva con errores (ahí se respeta lo ingresado).
+  if (!document.querySelector(".alerta--error")) {
+    form.elements["fecha_compra"].value =
+      `${ahora.getFullYear()}-${pad(ahora.getMonth() + 1)}-${pad(ahora.getDate())}T${pad(ahora.getHours())}:${pad(ahora.getMinutes())}`;
+  }
   const EJEMPLOS = {
     rapido: {
       plazo_plataforma: 12, estado_cliente: "SP", ciudad_cliente: "campinas", estado_vendedor: "SP", ciudad_vendedor: "sao paulo",
